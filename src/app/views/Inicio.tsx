@@ -30,16 +30,12 @@ import Typography from "@mui/material/Typography";
 import { styled, useTheme } from "@mui/material/styles";
 import { useRef, useState } from "react";
 
-import CheckIcon from "@mui/icons-material/Check";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import MultilineChartIcon from "@mui/icons-material/MultilineChart";
-import PersonIcon from "@mui/icons-material/Person";
-import SearchIcon from "@mui/icons-material/Search";
-import WarningIcon from "@mui/icons-material/Warning";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import PersonIcon from "@mui/icons-material/Person";
 
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-
+import logos from "../assets/img/logo-jugos-del-valle.svg";
 import { useNavigate } from "react-router-dom";
 const drawerWidth: number = 240;
 
@@ -97,9 +93,7 @@ interface Props {
 
 export default function Inicio({ children }: Props) {
   const navigate = useNavigate();
-  const theme = useTheme();
 
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const anchorRef = useRef<HTMLButtonElement>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [placement, setPlacement] = useState<PopperPlacementType>();
@@ -248,6 +242,17 @@ export default function Inicio({ children }: Props) {
             px: [1],
           }}
         >
+          <img
+            src={logos}
+            alt="Descripción de la imagen"
+            width="100"
+            height="70"
+            onClick={() => navigate("/inicio")} // Agrega un evento onClick
+            style={{
+              cursor: "pointer",
+              marginRight: "20px",
+            }}
+          />
           <IconButton onClick={toggleDrawer}>
             <ChevronLeftIcon sx={{ ml: "auto" }} />
           </IconButton>
