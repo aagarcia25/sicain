@@ -1,10 +1,21 @@
 import { Box, Grid } from "@mui/material";
+import { useState } from "react";
 import { QrReader } from "react-qr-reader";
 import { useNavigate } from "react-router-dom";
+import { AlertS } from "../../../helpers/AlertS";
+import { Servicios } from "../../../services/Servicios";
+import Progress from "../../share/Progress";
+import DatosEmpleado from "./DatosEmpleado";
 
 export const Escaner = () => {
+  const [slideropen, setslideropen] = useState(false);
+  const [openview, setopenview] = useState(false);
+  const [vrows, setVrows] = useState({});
   const navigate = useNavigate();
 
+  const handleClose = () => {
+    setopenview(false);
+  };
   const boxStyle = {
     // Resto de los estilos del Box (como se mencionó anteriormente)
     // ...
@@ -19,14 +30,45 @@ export const Escaner = () => {
     height: "50%",
   };
 
+  const valida = (numEmpleado: string) => {
+    setslideropen(true);
+    let data = {
+      NumEmpleado: numEmpleado,
+    };
+
+    Servicios.Escaner(data).then((res) => {
+      if (res.SUCCESS) {
+        if (res.RESPONSE) {
+          setVrows(res.RESPONSE);
+          setopenview(true);
+        } else {
+          AlertS.fire({
+            title: "¡Error!",
+            text: "Favor de Validar sus Credenciales",
+            icon: "error",
+          });
+        }
+        setslideropen(false);
+      } else {
+        setslideropen(false);
+        AlertS.fire({
+          title: "¡Error!",
+          text: "Sin Respuesta",
+          icon: "error",
+        });
+      }
+    });
+  };
+
   const handleScan = (scanData: any) => {
     if (scanData && scanData !== "") {
-      navigate("/inicio/VisistasEscaneo/" + scanData.text);
+      valida(scanData.text);
     }
   };
 
   return (
     <div>
+      <Progress open={slideropen}></Progress>
       <Grid
         container
         spacing={2}
@@ -49,7 +91,11 @@ export const Escaner = () => {
         {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
         {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
       </Grid>
-      ;
+      {openview ? (
+        <DatosEmpleado handleClose={handleClose} datos={vrows} />
+      ) : (
+        ""
+      )}
     </div>
   );
 };

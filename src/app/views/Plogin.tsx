@@ -10,21 +10,58 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import CryptoJS from "crypto-js";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import backgroundImg from "../assets/img/dueno-del-valle.jpg"; // Importa la imagen desde tu carpeta assets
 import logo from "../assets/img/logop.png";
-import { useNavigate } from "react-router-dom";
+import { AlertS } from "../helpers/AlertS";
+import { Servicios } from "../services/Servicios";
+import Progress from "./share/Progress";
 
 export const Plogin = () => {
+  const secretKey = "SICAIN"; // Clave secreta para el cifrado
   const navigate = useNavigate();
   const theme = useTheme();
+  const [slideropen, setslideropen] = useState(false);
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const [username, setUsername] = useState("");
+  const [pass, setPass] = useState("");
 
-  const login = (data: any) => {
-    navigate("/inicio");
+  const login = () => {
+    setslideropen(true);
+    let data = {
+      nombreUsuario: username,
+      Password: pass,
+    };
+
+    Servicios.login(data).then((res) => {
+      console.log(res);
+      if (res.SUCCESS) {
+        if (res.RESPONSE) {
+          navigate("/inicio");
+        } else {
+          AlertS.fire({
+            title: "¡Error!",
+            text: "Favor de Validar sus Credenciales",
+            icon: "error",
+          });
+        }
+        setslideropen(false);
+      } else {
+        setslideropen(false);
+        AlertS.fire({
+          title: "¡Error!",
+          text: "Sin Respuesta",
+          icon: "error",
+        });
+      }
+    });
   };
 
   return (
     <div>
+      <Progress open={slideropen}></Progress>
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -84,10 +121,12 @@ export const Plogin = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Usuario"
               name="email"
               autoComplete="email"
               autoFocus
+              value={username}
+              onChange={(v) => setUsername(v.target.value)}
             />
             <TextField
               variant="outlined"
@@ -98,7 +137,8 @@ export const Plogin = () => {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              value={pass}
+              onChange={(v) => setPass(v.target.value)}
             />
             {/* <FormControlLabel
             control={<Checkbox value="remember" />}
@@ -112,6 +152,7 @@ export const Plogin = () => {
                 marginTop: "20px", // Agregar margen superior
               }}
               onClick={login}
+              disabled={!(username.trim() !== "" && pass.trim() !== "")}
             >
               Ingresar
             </Button>

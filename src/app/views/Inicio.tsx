@@ -15,7 +15,6 @@ import {
   Popper,
   PopperPlacementType,
   Tooltip,
-  useMediaQuery,
 } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -27,7 +26,7 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { useRef, useState } from "react";
 
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -35,8 +34,8 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PersonIcon from "@mui/icons-material/Person";
 
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
-import logos from "../assets/img/logo-jugos-del-valle.svg";
 import { useNavigate } from "react-router-dom";
+import logos from "../assets/img/logo-jugos-del-valle.svg";
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {

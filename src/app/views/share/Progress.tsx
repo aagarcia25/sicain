@@ -2,14 +2,6 @@ import { CircularProgress, Dialog, Grid, Typography } from "@mui/material";
 import * as React from "react";
 
 const Progress = ({ open, mensaje }: { open: boolean; mensaje?: string }) => {
-  const timer = React.useRef<number>();
-
-  React.useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
-
   return (
     <Dialog
       fullScreen
