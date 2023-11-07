@@ -17,9 +17,6 @@ export const Escaner = () => {
     setopenview(false);
   };
   const boxStyle = {
-    // Resto de los estilos del Box (como se mencionó anteriormente)
-    // ...
-
     display: "flex",
     justifyContent: "center",
     alignItems: "center",

@@ -1614,15 +1614,6 @@ button.notificacionesSelected:hover {
   color: white;
 }
 
-textarea {
-  /* resize: none; */
-  line-height: 1.6;
-  /* text-transform: capitalize; */
-  text-decoration: none;
-  font-weight: 400;
-  font-size: 1.25rem;
-  font-family: sans-serif;
-}
 
 label {
   resize: none;

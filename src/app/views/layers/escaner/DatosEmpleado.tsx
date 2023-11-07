@@ -1,9 +1,13 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
+import { GridColDef } from "@mui/x-data-grid";
+import { format } from "date-fns";
 import { useState } from "react";
+import { AlertS } from "../../../helpers/AlertS";
+import { Servicios } from "../../../services/Servicios";
+import MUIXDataGrid from "../../share/MUIXDataGrid";
 import ModalForm from "../../share/ModalForm";
 import Progress from "../../share/Progress";
-import MUIXDataGrid from "../../share/MUIXDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
+import ReporteIncidencia from "./ReporteIncidencia";
 
 const DatosEmpleado = ({
   datos,
@@ -14,6 +18,7 @@ const DatosEmpleado = ({
 }) => {
   const [open, setOpen] = useState(false);
   const [openHist, setopenHist] = useState(false);
+  const [openIncidencia, setopenIncidencia] = useState(false);
   const [data, setData] = useState([]);
 
   const columnsRel: GridColDef[] = [
@@ -22,10 +27,14 @@ const DatosEmpleado = ({
     },
 
     {
-      field: "fecha",
+      field: "Fecha",
       headerName: "Fecha",
       description: "Fecha",
       width: 150,
+      valueFormatter: (params) => {
+        const date = new Date(params.value);
+        return format(date, "dd/MM/yyyy");
+      },
     },
     {
       field: "HoraEntrada",
@@ -40,7 +49,12 @@ const DatosEmpleado = ({
       width: 150,
     },
   ];
+
+  const openincidencia = () => {
+    setopenIncidencia(true);
+  };
   const openhist = () => {
+    getbitacora();
     if (openHist) {
       setopenHist(false);
     } else {
@@ -48,6 +62,34 @@ const DatosEmpleado = ({
     }
   };
 
+  const getbitacora = () => {
+    setOpen(true);
+    let data = {
+      NumEmpleado: datos.NumeroEmpleado,
+    };
+
+    Servicios.Bitacora(data).then((res) => {
+      if (res.SUCCESS) {
+        if (res.RESPONSE) {
+          setData(res.RESPONSE);
+        } else {
+          AlertS.fire({
+            title: "¡Error!",
+            text: "Favor de Validar sus Credenciales",
+            icon: "error",
+          });
+        }
+        setOpen(false);
+      } else {
+        setOpen(false);
+        AlertS.fire({
+          title: "¡Error!",
+          text: "Sin Respuesta",
+          icon: "error",
+        });
+      }
+    });
+  };
   return (
     <>
       <Progress open={open}></Progress>
@@ -127,6 +169,7 @@ const DatosEmpleado = ({
                 sx={{
                   backgroundColor: "blue",
                 }}
+                onClick={openincidencia}
               >
                 Generar Incidencia
               </Button>
@@ -141,6 +184,11 @@ const DatosEmpleado = ({
           ""
         )}
       </ModalForm>
+      {openIncidencia ? (
+        <ReporteIncidencia handleClose={handleClose} data={datos} />
+      ) : (
+        ""
+      )}
     </>
   );
 };

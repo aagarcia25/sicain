@@ -32,7 +32,7 @@ import { useRef, useState } from "react";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import PersonIcon from "@mui/icons-material/Person";
-
+import ErrorIcon from "@mui/icons-material/Error";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import { useNavigate } from "react-router-dom";
 import logos from "../assets/img/logo-jugos-del-valle.svg";
@@ -264,11 +264,19 @@ export default function Inicio({ children }: Props) {
             </ListItemIcon>
             <ListItemText primary="Escanear" />
           </ListItemButton>
+
           <ListItemButton onClick={() => navigate("/bitacora")}>
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Bitacora" />
+          </ListItemButton>
+
+          <ListItemButton onClick={() => navigate("/incidencia")}>
+            <ListItemIcon>
+              <ErrorIcon />
+            </ListItemIcon>
+            <ListItemText primary="Incidencias " />
           </ListItemButton>
 
           <Divider sx={{ my: 1 }} />
