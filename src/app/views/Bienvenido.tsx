@@ -1,8 +1,8 @@
-import { Grid, Tooltip } from "@mui/material";
-import { BarChart, LineChart, PieChart } from "@mui/x-charts";
-import { CardC } from "./share/Card";
+import { Grid } from "@mui/material";
+import { BarChart } from "@mui/x-charts";
 import { useEffect, useState } from "react";
 import { Servicios } from "../services/Servicios";
+import { CardC } from "./share/Card";
 
 interface Ichat1 {
   total: number;
@@ -19,7 +19,6 @@ export const Bienvenido = () => {
     let param = {};
     Servicios.totalincidencias(param).then((res) => {
       if (res.SUCCESS) {
-        console.log(res.RESPONSE[0].total);
         settotalincidencias(res.RESPONSE[0].total);
       }
     });
@@ -63,25 +62,30 @@ export const Bienvenido = () => {
           ></CardC>
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={3}>
-          {/* <CardC></CardC> */}
-          <BarChart
-            xAxis={[
-              {
-                id: "barCategories",
-                data: incidenciasporfechadata.map(
-                  (item) => item?.FechaCreacion
-                ),
-                scaleType: "band",
-              },
-            ]}
-            series={[
-              {
-                data: incidenciasporfechadata.map((item) => item?.total),
-              },
-            ]}
-            width={500}
-            height={300}
-          />
+          {incidenciasporfechadata.length > 0 ? (
+            <BarChart
+              xAxis={[
+                {
+                  id: "barCategories",
+                  data: incidenciasporfechadata.map(
+                    (item: Ichat1) => item?.FechaCreacion
+                  ),
+                  scaleType: "band",
+                },
+              ]}
+              series={[
+                {
+                  data: incidenciasporfechadata.map(
+                    (item: Ichat1) => item?.total
+                  ),
+                },
+              ]}
+              width={500}
+              height={300}
+            />
+          ) : (
+            ""
+          )}
         </Grid>
         <Grid item xs={12} sm={12} md={4} lg={6}>
           {/* <BarChart
