@@ -28,7 +28,6 @@ export const Bienvenido = () => {
     let param = {};
     Servicios.Incidenciasporfecha(param).then((res) => {
       if (res.SUCCESS) {
-        console.log(res.RESPONSE);
         setincidenciasporfechadata(res.RESPONSE);
       }
     });

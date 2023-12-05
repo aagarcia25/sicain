@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from "react";
-import TitleComponent from "../../share/TitleComponent";
 import { Grid } from "@mui/material";
-import MUIXDataGrid from "../../share/MUIXDataGrid";
-import { GridColDef } from "@mui/x-data-grid";
-import { Servicios } from "../../../services/Servicios";
+import { useEffect, useState } from "react";
 import { AlertS } from "../../../helpers/AlertS";
-
+import { Servicios } from "../../../services/Servicios";
+import MUIXDataGrid from "../../share/MUIXDataGrid";
+import TitleComponent from "../../share/TitleComponent";
 export const Bitacora = () => {
   const [open, setOpen] = useState(false);
   const [data, setData] = useState([]);

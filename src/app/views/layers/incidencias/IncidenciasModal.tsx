@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import { Box, Grid, Typography } from "@mui/material";
+import { useEffect } from "react";
 import ModalForm from "../../share/ModalForm";
-import { Box, Grid, Button, Typography } from "@mui/material";
-import Progress from "../../share/Progress";
 
 const IncidenciasModal = ({
   datos,
@@ -10,15 +9,10 @@ const IncidenciasModal = ({
   datos: any;
   handleClose: Function;
 }) => {
-  const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    console.log(datos);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <div>
-      <Progress open={open} />
       <ModalForm title={"Generar Incidencia"} handleClose={handleClose}>
         <Box boxShadow={3}>
           <Grid

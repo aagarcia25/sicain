@@ -1,7 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import { QrReader } from "react-qr-reader";
-import { useNavigate } from "react-router-dom";
 import { AlertS } from "../../../helpers/AlertS";
 import { Servicios } from "../../../services/Servicios";
 import Progress from "../../share/Progress";
@@ -11,7 +10,6 @@ export const Escaner = () => {
   const [slideropen, setslideropen] = useState(false);
   const [openview, setopenview] = useState(false);
   const [vrows, setVrows] = useState({});
-  const navigate = useNavigate();
 
   const handleClose = () => {
     setopenview(false);

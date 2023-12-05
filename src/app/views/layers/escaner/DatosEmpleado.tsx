@@ -1,6 +1,5 @@
 import { Box, Button, Grid, Typography } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-import { format } from "date-fns";
 import { useEffect, useState } from "react";
 import { AlertS } from "../../../helpers/AlertS";
 import { Servicios } from "../../../services/Servicios";
@@ -158,7 +157,6 @@ const DatosEmpleado = ({
       if (res.SUCCESS) {
         if (res.RESPONSE) {
           setbitacora(res.RESPONSE);
-          console.log(bitacora);
         }
         setOpen(false);
       } else {

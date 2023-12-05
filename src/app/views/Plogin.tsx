@@ -10,17 +10,17 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CryptoJS from "crypto-js";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import backgroundImg from "../assets/img/dueno-del-valle.jpg"; // Importa la imagen desde tu carpeta assets
 import logo from "../assets/img/logop.png";
 import { AlertS } from "../helpers/AlertS";
+import { encrypta } from "../helpers/cifrado";
 import { Servicios } from "../services/Servicios";
+import { setItem } from "../services/localStorage";
 import Progress from "./share/Progress";
 
 export const Plogin = () => {
-  const secretKey = "SICAIN"; // Clave secreta para el cifrado
   const navigate = useNavigate();
   const theme = useTheme();
   const [slideropen, setslideropen] = useState(false);
@@ -38,12 +38,16 @@ export const Plogin = () => {
     Servicios.login(data).then((res) => {
       console.log(res);
       if (res.SUCCESS) {
-        if (res.RESPONSE) {
+        if (res.RESPONSE.login) {
+          setItem(true, "l1");
+          setItem(encrypta(JSON.stringify(res.RESPONSE.User)), "l2");
+          setItem(encrypta(JSON.stringify(res.RESPONSE.Roles)), "l3");
+          setItem(encrypta(JSON.stringify(res.RESPONSE.User.Id)), "l5");
           navigate("/inicio");
         } else {
           AlertS.fire({
             title: "¡Error!",
-            text: "Favor de Validar sus Credenciales",
+            text: res.STRMESSAGE,
             icon: "error",
           });
         }

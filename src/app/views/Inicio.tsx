@@ -1,20 +1,17 @@
+import AssignmentIcon from "@mui/icons-material/Assignment";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ErrorIcon from "@mui/icons-material/Error";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import {
-  Avatar,
-  Button,
-  ClickAwayListener,
-  Fade,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  MenuItem,
-  MenuList,
-  Paper,
-  Popper,
-  PopperPlacementType,
-  Tooltip,
 } from "@mui/material";
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -27,16 +24,16 @@ import List from "@mui/material/List";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { styled } from "@mui/material/styles";
-import { useRef, useState } from "react";
-
-import AssignmentIcon from "@mui/icons-material/Assignment";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PersonIcon from "@mui/icons-material/Person";
-import ErrorIcon from "@mui/icons-material/Error";
-import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import logos from "../assets/img/logo-jugos-del-valle.svg";
-const drawerWidth: number = 240;
+import { desencrypta, encryptalaravel } from "../helpers/cifrado";
+import { Servicios } from "../services/Servicios";
+import { getItem } from "../services/localStorage";
+import { useIdleTimer } from "react-idle-timer";
+import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+const drawerWidth: number = 280;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -92,213 +89,225 @@ interface Props {
 
 export default function Inicio({ children }: Props) {
   const navigate = useNavigate();
-
-  const anchorRef = useRef<HTMLButtonElement>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [placement, setPlacement] = useState<PopperPlacementType>();
-
   const [open, setOpen] = useState(false);
-  const [openmodal, setopenmodal] = useState(false);
+  const [rol, setRol] = useState("");
+  const [contador, setContador] = useState(0);
+  const [showExpiredModal, setShowExpiredModal] = useState(false);
 
-  const onLogOut = () => {
-    localStorage.clear();
-    navigate("/");
-  };
+  const logout = async () => {
+    try {
+      const user = JSON.parse(
+        desencrypta(JSON.parse(String(getItem("l2"))))
+      ) as any;
 
-  const onConfigProfile = () => {
-    navigate("/perfil");
-    setOpen((prevOpen) => !prevOpen);
+      const data = {
+        id: encryptalaravel(user.Id),
+      };
+
+      const res = await Servicios.logout(data);
+
+      if (res.SUCCESS) {
+        localStorage.clear();
+        navigate("/");
+      } else {
+        throw new Error("No response from the server");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      Swal.fire({
+        title: "¡Error!",
+        text: "Ocurrió un error durante el cierre de sesión.",
+        icon: "error",
+      });
+    } finally {
+    }
   };
 
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const handleToggle =
-    (newPlacement: PopperPlacementType) =>
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      setAnchorEl(event.currentTarget);
-      setPlacement(newPlacement);
-      setopenmodal((prevOpen) => !prevOpen);
-    };
+  const handleOnIdle = () => {
+    setShowExpiredModal(true);
+    setContador(0);
+    let contador = 5;
+    const countdownInterval = setInterval(() => {
+      setContador(contador);
 
-  const handleClose = (event: Event | React.SyntheticEvent) => {
-    if (
-      anchorRef.current &&
-      anchorRef.current.contains(event.target as HTMLElement)
-    ) {
-      return;
-    }
-
-    setopenmodal(false);
+      if (contador === 0) {
+        clearInterval(countdownInterval);
+        logout();
+      } else {
+        contador--;
+      }
+    }, 1000);
+    // Puedes realizar acciones adicionales cuando la aplicación está inactiva
   };
 
-  function handleListKeyDown(event: React.KeyboardEvent) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      setopenmodal(false);
-    } else if (event.key === "Escape") {
-      setopenmodal(false);
-    }
-  }
+  // Configuración del gancho useIdleTimer
+  useIdleTimer({
+    timeout: 60000 * 10, // Tiempo en milisegundos antes de considerar la aplicación inactiva
+    onIdle: handleOnIdle,
+    debounce: 500, // Tiempo de espera antes de considerar la aplicación inactiva después de un evento de actividad
+  });
+
+  useEffect(() => {
+    setRol(desencrypta(JSON.parse(String(getItem("l4")))));
+  }, []);
+
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar
-        position="absolute"
-        sx={{ backgroundColor: "#F2F3F4" }}
-        open={open}
-      >
-        <Toolbar
-          sx={{
-            pr: "24px", // keep right padding when drawer closed
-          }}
+    <div>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <AppBar
+          position="absolute"
+          sx={{ backgroundColor: "#F2F3F4" }}
+          open={open}
         >
-          <IconButton
-            edge="start"
-            color="info"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
+          <Toolbar
             sx={{
-              marginRight: "36px",
-              ...(open && { display: "none" }),
+              pr: "24px", // keep right padding when drawer closed
             }}
           >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            component="h1"
-            variant="h6"
-            color="#000000"
-            noWrap
-            sx={{ flexGrow: 1 }}
-          >
-            SISTEMA DE CONTROL DE ACCESOS E INCIDENCIAS
-          </Typography>
-
-          <Tooltip title="Haz click para ver más">
-            <Button
-              aria-controls={openmodal ? "composition-menu" : undefined}
-              aria-expanded={openmodal ? "true" : undefined}
-              aria-haspopup="true"
-              onClick={handleToggle("left")}
+            <IconButton
+              edge="start"
+              color="info"
+              aria-label="open drawer"
+              onClick={toggleDrawer}
+              sx={{
+                marginRight: "36px",
+                ...(open && { display: "none" }),
+              }}
             >
-              <Avatar sx={{ width: 40, height: 40 }}>
-                <PersonIcon
-                  sx={{
-                    width: "100%", // Ajusta el ancho al 100% para llenar el Avatar
-                    height: "100%", // Ajusta el alto al 100% para llenar el Avatar
-                  }}
-                />
-              </Avatar>
-            </Button>
-          </Tooltip>
-          <Popper
-            open={openmodal}
-            role={undefined}
-            placement={placement}
-            anchorEl={anchorEl}
-            transition
-            disablePortal
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              component="h1"
+              variant="h6"
+              color="#000000"
+              noWrap
+              sx={{ flexGrow: 1 }}
+            >
+              SISTEMA DE CONTROL DE ACCESOS E INCIDENCIAS
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+          <Toolbar
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "flex-end",
+              px: [1],
+            }}
           >
-            {({ TransitionProps }) => (
-              <Fade {...TransitionProps} timeout={350}>
-                <Paper>
-                  <ClickAwayListener onClickAway={handleClose}>
-                    <MenuList
-                      autoFocusItem={openmodal}
-                      id="composition-menu"
-                      aria-labelledby="composition-button"
-                      onKeyDown={handleListKeyDown}
-                    >
-                      <MenuItem onClick={onConfigProfile}>
-                        <IconButton onClick={onConfigProfile}>
-                          <ManageAccountsIcon className="IconoDentroBoton" />
-                        </IconButton>
-                        Configuración de perfil
-                      </MenuItem>
-
-                      <MenuItem onClick={onLogOut}>
-                        <IconButton onClick={onLogOut}>
-                          <LogoutIcon className="IconoDentroBoton" />
-                        </IconButton>{" "}
-                        Cerrar sesión
-                      </MenuItem>
-                    </MenuList>
-                  </ClickAwayListener>
-                </Paper>
-              </Fade>
+            <img
+              src={logos}
+              alt="Descripción de la imagen"
+              width="100"
+              height="70"
+              onClick={() => navigate("/inicio")} // Agrega un evento onClick
+              style={{
+                cursor: "pointer",
+                marginRight: "20px",
+              }}
+            />
+            <IconButton onClick={toggleDrawer}>
+              <ChevronLeftIcon sx={{ ml: "auto" }} />
+            </IconButton>
+          </Toolbar>
+          <Divider />
+          <List component="nav">
+            {rol !== "CONSULTA" ? (
+              <ListItemButton onClick={() => navigate("/escaner")}>
+                <ListItemIcon>
+                  <QrCodeScannerIcon />
+                </ListItemIcon>
+                <ListItemText primary="Escanear" />
+              </ListItemButton>
+            ) : (
+              ""
             )}
-          </Popper>
-        </Toolbar>
-      </AppBar>
-      <Drawer variant="permanent" open={open}>
-        <Toolbar
+
+            <ListItemButton onClick={() => navigate("/bitacora")}>
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Bitacora" />
+            </ListItemButton>
+
+            <ListItemButton onClick={() => navigate("/incidencia")}>
+              <ListItemIcon>
+                <ErrorIcon />
+              </ListItemIcon>
+              <ListItemText primary="Incidencias " />
+            </ListItemButton>
+
+            {rol === "ADMIN" ? (
+              <ListItemButton onClick={() => navigate("/usuarios")}>
+                <ListItemIcon>
+                  <SupervisorAccountIcon />
+                </ListItemIcon>
+                <ListItemText primary="Administración de Usuarios" />
+              </ListItemButton>
+            ) : (
+              ""
+            )}
+
+            <Divider sx={{ my: 1 }} />
+            <ListItemButton onClick={logout}>
+              <ListItemIcon>
+                <LogoutIcon className="IconoDentroBoton" />
+              </ListItemIcon>
+              <ListItemText primary="Cerrar Sesión " />
+            </ListItemButton>
+          </List>
+        </Drawer>
+        <Box
+          component="main"
           sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "flex-end",
-            px: [1],
+            backgroundColor: (theme) =>
+              theme.palette.mode === "light"
+                ? theme.palette.grey[100]
+                : theme.palette.grey[900],
+            flexGrow: 1,
+            height: "100vh",
+            overflow: "auto",
           }}
         >
-          <img
-            src={logos}
-            alt="Descripción de la imagen"
-            width="100"
-            height="70"
-            onClick={() => navigate("/inicio")} // Agrega un evento onClick
-            style={{
-              cursor: "pointer",
-              marginRight: "20px",
-            }}
-          />
-          <IconButton onClick={toggleDrawer}>
-            <ChevronLeftIcon sx={{ ml: "auto" }} />
-          </IconButton>
-        </Toolbar>
-        <Divider />
-        <List component="nav">
-          <ListItemButton onClick={() => navigate("/escaner")}>
-            <ListItemIcon>
-              <QrCodeScannerIcon />
-            </ListItemIcon>
-            <ListItemText primary="Escanear" />
-          </ListItemButton>
-
-          <ListItemButton onClick={() => navigate("/bitacora")}>
-            <ListItemIcon>
-              <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Bitacora" />
-          </ListItemButton>
-
-          <ListItemButton onClick={() => navigate("/incidencia")}>
-            <ListItemIcon>
-              <ErrorIcon />
-            </ListItemIcon>
-            <ListItemText primary="Incidencias " />
-          </ListItemButton>
-
-          <Divider sx={{ my: 1 }} />
-        </List>
-      </Drawer>
-      <Box
-        component="main"
-        sx={{
-          backgroundColor: (theme) =>
-            theme.palette.mode === "light"
-              ? theme.palette.grey[100]
-              : theme.palette.grey[900],
-          flexGrow: 1,
-          height: "100vh",
-          overflow: "auto",
-        }}
-      >
-        <Toolbar />
-        <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-          {children}
-        </Container>
+          <Toolbar />
+          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+            {children}
+          </Container>
+        </Box>
       </Box>
-    </Box>
+      {showExpiredModal ? (
+        <div>
+          <Dialog
+            open={true}
+            aria-labelledby="alert-dialog-title"
+            aria-describedby="alert-dialog-description"
+          >
+            <DialogTitle id="alert-dialog-title" align="center">
+              <Typography variant="h4" component="h2">
+                Cierre de Sesión por inactividad
+              </Typography>
+            </DialogTitle>
+            <DialogContent>
+              <DialogContentText id="alert-dialog-description" align="center">
+                <Typography variant="h5" component="h2">
+                  Por su seguridad, cerraremos la sesión
+                </Typography>
+                <Typography variant="h6" component="h2">
+                  {contador}
+                </Typography>
+              </DialogContentText>
+            </DialogContent>
+          </Dialog>
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 }

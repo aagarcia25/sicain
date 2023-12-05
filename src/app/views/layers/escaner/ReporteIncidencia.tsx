@@ -1,12 +1,11 @@
+import SaveIcon from "@mui/icons-material/Save";
 import { Box, Button, Grid } from "@mui/material";
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { AlertS } from "../../../helpers/AlertS";
+import { Servicios } from "../../../services/Servicios";
 import ModalForm from "../../share/ModalForm";
 import Progress from "../../share/Progress";
-import SaveIcon from "@mui/icons-material/Save";
-import { Servicios } from "../../../services/Servicios";
-import { title } from "process";
-import { AlertS } from "../../../helpers/AlertS";
-import { useNavigate } from "react-router-dom";
 const ReporteIncidencia = ({
   handleClose,
   data,
@@ -22,7 +21,6 @@ const ReporteIncidencia = ({
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    console.log(data);
     const initializeCamera = async () => {
       try {
         const constraints = { video: true };
@@ -181,6 +179,7 @@ const ReporteIncidencia = ({
                 value={mensaje}
                 placeholder="Describe la incidencia"
                 onChange={(e) => setMensaje(e.target.value)}
+                autoComplete="off"
               ></textarea>
             </Grid>
           </Grid>

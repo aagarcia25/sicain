@@ -4,6 +4,9 @@ export class Servicios {
   public static async login(data: any) {
     return await post("login", data);
   }
+  public static async logout(data: any) {
+    return await post("logout", data);
+  }
 
   public static async Escaner(data: any) {
     return await post("Escaner", data);
@@ -42,5 +45,13 @@ export class Servicios {
 
   public static async Incidenciasporfecha(data: any) {
     return await post("Incidenciasporfecha", data);
+  }
+
+  public static async usuarios(data: any) {
+    return await post("usuarios", data);
+  }
+
+  public static async selectores(data: any) {
+    return await post("selectores", data);
   }
 }
