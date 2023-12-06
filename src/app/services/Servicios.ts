@@ -4,6 +4,9 @@ export class Servicios {
   public static async login(data: any) {
     return await post("login", data);
   }
+  public static async ChangePassword(data: any) {
+    return await post("ChangePassword", data);
+  }
   public static async logout(data: any) {
     return await post("logout", data);
   }

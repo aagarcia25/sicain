@@ -33,6 +33,7 @@ import { Servicios } from "../services/Servicios";
 import { getItem } from "../services/localStorage";
 import { useIdleTimer } from "react-idle-timer";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import KeyIcon from "@mui/icons-material/Key";
 const drawerWidth: number = 280;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -94,6 +95,9 @@ export default function Inicio({ children }: Props) {
   const [contador, setContador] = useState(0);
   const [showExpiredModal, setShowExpiredModal] = useState(false);
 
+  const changepassword = async () => {
+    navigate("/cp");
+  };
   const logout = async () => {
     try {
       const user = JSON.parse(
@@ -260,6 +264,12 @@ export default function Inicio({ children }: Props) {
                 <LogoutIcon className="IconoDentroBoton" />
               </ListItemIcon>
               <ListItemText primary="Cerrar Sesión " />
+            </ListItemButton>
+            <ListItemButton onClick={changepassword}>
+              <ListItemIcon>
+                <KeyIcon />
+              </ListItemIcon>
+              <ListItemText primary="Cambiar Contraseña " />
             </ListItemButton>
           </List>
         </Drawer>
