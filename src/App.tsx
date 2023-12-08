@@ -4,7 +4,7 @@ import { AppRouter } from "./app/router/AppRouter";
 import { Plogin } from "./app/views/Plogin";
 
 function App() {
-  useEffect(() => {
+  /* useEffect(() => {
     // Redirección de HTTP a HTTPS
     if (
       window.location.protocol !== "https:" &&
@@ -34,7 +34,7 @@ function App() {
         window.removeEventListener("beforeunload", handleBeforeUnload);
       };
     }
-  }, []);
+  }, []);*/
 
   return (
     <div>
