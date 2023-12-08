@@ -156,7 +156,11 @@ export default function Inicio({ children }: Props) {
   });
 
   useEffect(() => {
-    setRol(desencrypta(JSON.parse(String(getItem("l4")))));
+    try {
+      setRol(desencrypta(JSON.parse(String(getItem("l4")))));
+    } catch (error) {
+      console.error("Error al procesar los datos:", error);
+    }
   }, []);
 
   return (
