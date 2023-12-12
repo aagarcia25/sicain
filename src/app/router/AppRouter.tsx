@@ -25,32 +25,32 @@ export const AppRouter = () => {
       <Inicio>
         <Routes>
           <Route
-            path="/sicain/inicio"
-            element={flag ? <Bienvenido /> : <Navigate to="/sicain" replace />}
+            path="/inicio"
+            element={flag ? <Bienvenido /> : <Navigate to="/" replace />}
           ></Route>
           <Route
-            path="/sicain/escaner"
-            element={flag ? <Escaner /> : <Navigate to="/sicain" replace />}
+            path="/escaner"
+            element={flag ? <Escaner /> : <Navigate to="/" replace />}
           ></Route>
           <Route
-            path="/sicain/bitacora"
-            element={flag ? <Bitacora /> : <Navigate to="/sicain" replace />}
+            path="/bitacora"
+            element={flag ? <Bitacora /> : <Navigate to="/" replace />}
           ></Route>
           <Route
-            path="/sicain/incidencia"
-            element={flag ? <Incidencias /> : <Navigate to="/sicain" replace />}
+            path="/incidencia"
+            element={flag ? <Incidencias /> : <Navigate to="/" replace />}
           ></Route>
           <Route
-            path="/sicain/usuarios"
-            element={flag ? <Usuarios /> : <Navigate to="/sicain" replace />}
+            path="/usuarios"
+            element={flag ? <Usuarios /> : <Navigate to="/" replace />}
           ></Route>
           <Route
-            path="/sicain/cp"
+            path="/cp"
             element={
               flag ? (
                 <ChangePassword usuario={user} />
               ) : (
-                <Navigate to="/sicain" replace />
+                <Navigate to="/" replace />
               )
             }
           ></Route>

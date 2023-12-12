@@ -38,12 +38,12 @@ function App() {
 
   return (
     <div>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           <Route path="/sicain" element={<Plogin />} />
           <Route path="/sicain/*" element={<AppRouter />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </div>
   );
 }
