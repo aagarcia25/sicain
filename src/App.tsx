@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import { AppRouter } from "./app/router/AppRouter";
 import { Plogin } from "./app/views/Plogin";
 
@@ -38,12 +38,12 @@ function App() {
 
   return (
     <div>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/sicain" element={<Plogin />} />
           <Route path="/sicain/*" element={<AppRouter />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </div>
   );
 }
