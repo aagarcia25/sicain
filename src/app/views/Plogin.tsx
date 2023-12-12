@@ -43,7 +43,7 @@ export const Plogin = () => {
           setItem(encrypta(JSON.stringify(res.RESPONSE.User)), "l2");
           setItem(encrypta(JSON.stringify(res.RESPONSE.Roles)), "l3");
           setItem(encrypta(JSON.stringify(res.RESPONSE.User.Id)), "l5");
-          navigate("/inicio");
+          navigate("/sicain/inicio");
         } else {
           AlertS.fire({
             title: "¡Error!",

@@ -96,7 +96,7 @@ export default function Inicio({ children }: Props) {
   const [showExpiredModal, setShowExpiredModal] = useState(false);
 
   const changepassword = async () => {
-    navigate("/cp");
+    navigate("/sicain/cp");
   };
   const logout = async () => {
     try {
@@ -214,7 +214,7 @@ export default function Inicio({ children }: Props) {
               alt="Descripción de la imagen"
               width="100"
               height="70"
-              onClick={() => navigate("/inicio")} // Agrega un evento onClick
+              onClick={() => navigate("/sicain/inicio")} // Agrega un evento onClick
               style={{
                 cursor: "pointer",
                 marginRight: "20px",
@@ -227,7 +227,7 @@ export default function Inicio({ children }: Props) {
           <Divider />
           <List component="nav">
             {rol !== "CONSULTA" ? (
-              <ListItemButton onClick={() => navigate("/escaner")}>
+              <ListItemButton onClick={() => navigate("/sicain/escaner")}>
                 <ListItemIcon>
                   <QrCodeScannerIcon />
                 </ListItemIcon>
@@ -237,14 +237,14 @@ export default function Inicio({ children }: Props) {
               ""
             )}
 
-            <ListItemButton onClick={() => navigate("/bitacora")}>
+            <ListItemButton onClick={() => navigate("/sicain/bitacora")}>
               <ListItemIcon>
                 <AssignmentIcon />
               </ListItemIcon>
               <ListItemText primary="Bitacora" />
             </ListItemButton>
 
-            <ListItemButton onClick={() => navigate("/incidencia")}>
+            <ListItemButton onClick={() => navigate("/sicain/incidencia")}>
               <ListItemIcon>
                 <ErrorIcon />
               </ListItemIcon>
@@ -252,7 +252,7 @@ export default function Inicio({ children }: Props) {
             </ListItemButton>
 
             {rol === "ADMIN" ? (
-              <ListItemButton onClick={() => navigate("/usuarios")}>
+              <ListItemButton onClick={() => navigate("/sicain/usuarios")}>
                 <ListItemIcon>
                   <SupervisorAccountIcon />
                 </ListItemIcon>

@@ -84,7 +84,7 @@ const ReporteIncidencia = ({
           text: "se Registro la Incidencia",
           icon: "success",
         });
-        navigate("/escaner");
+        navigate("/sicain/escaner");
         setOpen(false);
       } else {
         setOpen(false);
