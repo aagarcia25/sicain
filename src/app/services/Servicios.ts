@@ -11,6 +11,11 @@ export class Servicios {
     return await post("logout", data);
   }
 
+  public static async logoutuser(data: any) {
+    return await post("logoutuser", data);
+  }
+
+
   public static async Escaner(data: any) {
     return await post("Escaner", data);
   }

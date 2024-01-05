@@ -14,11 +14,13 @@ export const AppRouter = () => {
   loadRol();
   let flag;
   let user;
+  let pv=false;
   try {
     flag = getItem("l1");
     user = JSON.parse(desencrypta(JSON.parse(String(getItem("l2"))))) as any;
+    pv = JSON.parse(desencrypta(JSON.parse(String(getItem("l6"))))) as any; 
   } catch (error) {
-    console.error("Error al procesar los datos:", error);
+   // console.error("Error al procesar los datos:", error);
   }
   return (
     <>
@@ -26,23 +28,33 @@ export const AppRouter = () => {
         <Routes>
           <Route
             path="/inicio"
-            element={flag ? <Bienvenido /> : <Navigate to="/" replace />}
+            element={
+              pv ? <Navigate to="/sicain/cp" replace />  :
+              flag ? <Bienvenido /> : <Navigate to="/" replace />}
           ></Route>
           <Route
             path="/escaner"
-            element={flag ? <Escaner /> : <Navigate to="/" replace />}
+            element={
+            pv ? <Navigate to="/sicain/cp" replace />  :
+            flag ? <Escaner /> : <Navigate to="/" replace />}
           ></Route>
           <Route
             path="/bitacora"
-            element={flag ? <Bitacora /> : <Navigate to="/" replace />}
+            element={
+              pv ? <Navigate to="/sicain/cp" replace />  :
+              flag ? <Bitacora /> : <Navigate to="/" replace />}
           ></Route>
           <Route
             path="/incidencia"
-            element={flag ? <Incidencias /> : <Navigate to="/" replace />}
+            element={
+              pv ? <Navigate to="/sicain/cp" replace />  :
+              flag ? <Incidencias /> : <Navigate to="/" replace />}
           ></Route>
           <Route
             path="/usuarios"
-            element={flag ? <Usuarios /> : <Navigate to="/" replace />}
+            element={
+              pv ? <Navigate to="/sicain/cp" replace />  :
+              flag ? <Usuarios /> : <Navigate to="/" replace />}
           ></Route>
           <Route
             path="/cp"
