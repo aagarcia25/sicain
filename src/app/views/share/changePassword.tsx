@@ -185,7 +185,7 @@ const ChangePassword = ({ usuario }: { usuario: any }) => {
             variant="outlined"
             onChange={(v) => setCurrentPassword(v.target.value)}
             autoComplete="off"
-           // onPaste={(e) => e.preventDefault()} // Prevenir la acción de pegar
+            onPaste={(e) => e.preventDefault()} // Prevenir la acción de pegar
           />
         </Grid>
         <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -202,7 +202,7 @@ const ChangePassword = ({ usuario }: { usuario: any }) => {
             variant="outlined"
             onChange={handlePasswordChange}
             autoComplete="off"
-           // onPaste={(e) => e.preventDefault()} // Prevenir la acción de pegar
+            onPaste={(e) => e.preventDefault()} // Prevenir la acción de pegar
           />
 
           {passwordError && (
@@ -231,7 +231,7 @@ const ChangePassword = ({ usuario }: { usuario: any }) => {
             error={IsValid}
             helperText={IsValid ? "Las Contraseñas No son iguales" : ""}
             autoComplete="off"
-          //  onPaste={(e) => e.preventDefault()} // Prevenir la acción de pegar
+            onPaste={(e) => e.preventDefault()} // Prevenir la acción de pegar
 
           
           />
