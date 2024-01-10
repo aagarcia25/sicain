@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import { AppRouter } from "./app/router/AppRouter";
 import { Plogin } from "./app/views/Plogin";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 function App() {
   /* useEffect(() => {
@@ -39,10 +39,13 @@ function App() {
 
   return (
     <div>
-     <Helmet>
+      <Helmet>
         {/* Configuración de cabeceras de seguridad */}
         <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
-        <meta http-equiv="Strict-Transport-Security" content="max-age=31536000; includeSubDomains; preload" />
+        <meta
+          http-equiv="Strict-Transport-Security"
+          content="max-age=31536000; includeSubDomains; preload"
+        />
         {/* Agrega otras cabeceras según tus necesidades */}
       </Helmet>
       <BrowserRouter>
