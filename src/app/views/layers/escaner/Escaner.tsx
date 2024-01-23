@@ -5,13 +5,14 @@ import { AlertS } from "../../../helpers/AlertS";
 import { Servicios } from "../../../services/Servicios";
 import Progress from "../../share/Progress";
 import DatosEmpleado from "./DatosEmpleado";
+import ModalForm from "../../share/ModalForm";
 
-export const Escaner = () => {
+export const Escaner = ({ handleClose }: { handleClose: Function }) => {
   const [slideropen, setslideropen] = useState(false);
   const [openview, setopenview] = useState(false);
   const [vrows, setVrows] = useState({});
 
-  const handleClose = () => {
+  const handleClose1 = () => {
     setopenview(false);
   };
   const boxStyle = {
@@ -30,7 +31,8 @@ export const Escaner = () => {
     let data = {
       NumEmpleado: numEmpleado,
     };
-
+    console.log("Escaneando");
+    console.log(numEmpleado);
     Servicios.Escaner(data).then((res) => {
       if (res.SUCCESS) {
         if (res.RESPONSE) {
@@ -63,34 +65,35 @@ export const Escaner = () => {
 
   return (
     <div>
-      <Progress open={slideropen}></Progress>
-      <Grid
-        container
-        spacing={2}
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <Grid item xs={12} sm={12} md={12} lg={12}>
-          <Box sx={boxStyle}>
-            <div style={qrReaderStyle}>
-              <QrReader
-                scanDelay={300}
-                constraints={{ facingMode: "environment" }}
-                onResult={handleScan}
-              />
-            </div>
-          </Box>
+      <ModalForm title={"Generar Incidencia"} handleClose={handleClose}>
+        <Grid
+          container
+          spacing={2}
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Grid item xs={12} sm={12} md={12} lg={12}>
+            <Box sx={boxStyle}>
+              <div style={qrReaderStyle}>
+                <QrReader
+                  scanDelay={300}
+                  constraints={{ facingMode: "environment" }}
+                  onResult={handleScan}
+                />
+              </div>
+            </Box>
+          </Grid>
+          {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
+          {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
+          {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
         </Grid>
-        {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
-        {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
-        {/* <Grid item xs={12} sm={12} md={4} lg={3}></Grid> */}
-      </Grid>
-      {openview ? (
-        <DatosEmpleado handleClose={handleClose} datos={vrows} />
-      ) : (
-        ""
-      )}
+        {openview ? (
+          <DatosEmpleado handleClose={handleClose1} datos={vrows} />
+        ) : (
+          ""
+        )}
+      </ModalForm>
     </div>
   );
 };

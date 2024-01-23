@@ -73,10 +73,10 @@ const ReporteIncidencia = ({
     setOpen(true);
     let dataForm = {
       Foto: photoData,
-      Observaciones: mensaje,
+      Observaciones: encodeURIComponent(mensaje),
       IdEmpleado: data?.Id,
     };
-
+    console.log(dataForm);
     Servicios.incidencia(dataForm).then((res) => {
       if (res.SUCCESS) {
         AlertS.fire({
@@ -84,8 +84,8 @@ const ReporteIncidencia = ({
           text: "se Registro la Incidencia",
           icon: "success",
         });
-        navigate("/sicain/escaner");
         setOpen(false);
+        navigate(0);
       } else {
         setOpen(false);
         AlertS.fire({

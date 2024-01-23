@@ -22,10 +22,6 @@ export class Servicios {
     return await postDoc("obtenerDoc", data);
   }
 
-  public static async Bitacora(data: any) {
-    return await post("Bitacora", data);
-  }
-
   public static async incidencia(data: any) {
     return await post("incidencia", data);
   }
@@ -36,14 +32,6 @@ export class Servicios {
 
   public static async Registra(data: any) {
     return await post("Registra", data);
-  }
-
-  public static async BitacoraSingle(data: any) {
-    return await post("BitacoraSingle", data);
-  }
-
-  public static async Bitacorafull(data: any) {
-    return await post("Bitacorafull", data);
   }
 
   public static async totalincidencias(data: any) {

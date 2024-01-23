@@ -8,13 +8,6 @@ import ModalForm from "../../share/ModalForm";
 import Progress from "../../share/Progress";
 import ReporteIncidencia from "./ReporteIncidencia";
 
-interface Ibitacora {
-  Id: string;
-  HoraEntrada: string;
-  HoraSalida: string;
-  Completado: number;
-}
-
 const DatosEmpleado = ({
   datos,
   handleClose,
@@ -22,161 +15,14 @@ const DatosEmpleado = ({
   datos: any;
   handleClose: Function;
 }) => {
-  const [open, setOpen] = useState(false);
-  const [openHist, setopenHist] = useState(false);
   const [openIncidencia, setopenIncidencia] = useState(false);
-  const [data, setData] = useState([]);
-  const [bitacora, setbitacora] = useState<Ibitacora[]>([]);
-
-  const columnsRel: GridColDef[] = [
-    {
-      field: "id",
-    },
-
-    {
-      field: "fecha",
-      headerName: "Fecha",
-      description: "Fecha",
-      width: 150,
-    },
-    {
-      field: "HoraEntrada",
-      headerName: "Hora Entrada",
-      description: "Hora Entrada",
-      width: 150,
-    },
-    {
-      field: "HoraSalida",
-      headerName: "Hora Salida",
-      description: "Hora Salida",
-      width: 150,
-    },
-  ];
-
-  const registroentrada = () => {
-    setOpen(true);
-    let data = {
-      Tipo: 1,
-      idEmpleado: datos.Id,
-    };
-
-    Servicios.Registra(data).then((res) => {
-      if (res.SUCCESS) {
-        AlertS.fire({
-          title: "!Información!",
-          text: "Se ha Registrado su Acceso",
-          icon: "success",
-        });
-        setOpen(false);
-      } else {
-        setOpen(false);
-        AlertS.fire({
-          title: "¡Error!",
-          text: "Sin Respuesta",
-          icon: "error",
-        });
-      }
-    });
-  };
-
-  const registrosalida = () => {
-    setOpen(true);
-    let data = {
-      Tipo: 2,
-      idEmpleado: datos.Id,
-      idbitacora: bitacora[0].Id,
-    };
-
-    Servicios.Registra(data).then((res) => {
-      if (res.SUCCESS) {
-        AlertS.fire({
-          title: "!Información!",
-          text: "Se ha Registrado su Salida",
-          icon: "success",
-        });
-        setOpen(false);
-      } else {
-        setOpen(false);
-        AlertS.fire({
-          title: "¡Error!",
-          text: "Sin Respuesta",
-          icon: "error",
-        });
-      }
-    });
-  };
 
   const openincidencia = () => {
     setopenIncidencia(true);
   };
-  const openhist = () => {
-    if (openHist) {
-      setopenHist(false);
-    } else {
-      getbitacora();
-      setopenHist(true);
-    }
-  };
-
-  const getbitacora = () => {
-    setOpen(true);
-    let data = {
-      idEmpleado: datos.Id,
-    };
-
-    Servicios.Bitacora(data).then((res) => {
-      if (res.SUCCESS) {
-        if (res.RESPONSE) {
-          setData(res.RESPONSE);
-        } else {
-          AlertS.fire({
-            title: "¡Error!",
-            text: "Favor de Validar sus Credenciales",
-            icon: "error",
-          });
-        }
-        setOpen(false);
-      } else {
-        setOpen(false);
-        AlertS.fire({
-          title: "¡Error!",
-          text: "Sin Respuesta",
-          icon: "error",
-        });
-      }
-    });
-  };
-
-  const validabitacora = () => {
-    setOpen(true);
-    let data = {
-      NumEmpleado: datos.Id,
-    };
-
-    Servicios.BitacoraSingle(data).then((res) => {
-      if (res.SUCCESS) {
-        if (res.RESPONSE) {
-          setbitacora(res.RESPONSE);
-        }
-        setOpen(false);
-      } else {
-        setOpen(false);
-        AlertS.fire({
-          title: "¡Error!",
-          text: "Sin Respuesta",
-          icon: "error",
-        });
-      }
-    });
-  };
-
-  useEffect(() => {
-    validabitacora();
-  }, [datos]);
 
   return (
     <>
-      <Progress open={open}></Progress>
       <ModalForm title={"Datos de Empleado"} handleClose={handleClose}>
         <Box boxShadow={3}>
           <Grid container spacing={0} padding={2}>
@@ -223,49 +69,6 @@ const DatosEmpleado = ({
             <Grid item xs={12} sm={12} md={12} lg={2}></Grid>
             <Grid item xs={12} sm={12} md={12} lg={2}></Grid>
             <Grid item xs={12} sm={12} md={12} lg={2}>
-              {bitacora.length === 0 ? (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "green",
-                  }}
-                  onClick={registroentrada}
-                >
-                  Registrar entrada
-                </Button>
-              ) : (
-                ""
-              )}
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={2}>
-              {bitacora.length !== 0 ? (
-                <Button
-                  fullWidth
-                  variant="contained"
-                  color="error"
-                  className={"actualizar"}
-                  onClick={registrosalida}
-                >
-                  Registrar Salida
-                </Button>
-              ) : (
-                ""
-              )}
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={2}>
-              <Button
-                fullWidth
-                variant="contained"
-                sx={{
-                  backgroundColor: "blue",
-                }}
-                onClick={openhist}
-              >
-                {openHist ? "Ocultar Historial" : "Ver Historial"}
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={12} md={12} lg={2}>
               <Button
                 fullWidth
                 variant="contained"
@@ -277,15 +80,11 @@ const DatosEmpleado = ({
                 Generar Incidencia
               </Button>
             </Grid>
+            <Grid item xs={12} sm={12} md={12} lg={2}></Grid>
+            <Grid item xs={12} sm={12} md={12} lg={2}></Grid>
+            <Grid item xs={12} sm={12} md={12} lg={2}></Grid>
           </Grid>
         </Box>
-        {openHist ? (
-          <Box boxShadow={3}>
-            <MUIXDataGrid columns={columnsRel} rows={data} />
-          </Box>
-        ) : (
-          ""
-        )}
       </ModalForm>
       {openIncidencia ? (
         <ReporteIncidencia handleClose={handleClose} data={datos} />

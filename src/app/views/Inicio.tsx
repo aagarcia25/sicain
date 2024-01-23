@@ -160,19 +160,20 @@ export default function Inicio({ children }: Props) {
       try {
         const rolEncriptado = getItem("l4");
         if (!rolEncriptado) {
-          throw new Error("No se encontró el rol encriptado en el almacenamiento local");
+          throw new Error(
+            "No se encontró el rol encriptado en el almacenamiento local"
+          );
         }
-  
+
         const rolDesencriptado = desencrypta(JSON.parse(String(rolEncriptado)));
         setRol(rolDesencriptado);
       } catch (error) {
         console.error("Error al procesar los datos:");
         navigate("/sinein/");
-      } 
-    
+      }
     };
     obtenerRolDesencriptado();
-  }, []); 
+  }, []);
 
   return (
     <div>
@@ -237,24 +238,6 @@ export default function Inicio({ children }: Props) {
           </Toolbar>
           <Divider />
           <List component="nav">
-            {rol !== "CONSULTA" ? (
-              <ListItemButton onClick={() => navigate("/sicain/escaner")}>
-                <ListItemIcon>
-                  <QrCodeScannerIcon />
-                </ListItemIcon>
-                <ListItemText primary="Escanear" />
-              </ListItemButton>
-            ) : (
-              ""
-            )}
-
-            <ListItemButton onClick={() => navigate("/sicain/bitacora")}>
-              <ListItemIcon>
-                <AssignmentIcon />
-              </ListItemIcon>
-              <ListItemText primary="Bitacora" />
-            </ListItemButton>
-
             <ListItemButton onClick={() => navigate("/sicain/incidencia")}>
               <ListItemIcon>
                 <ErrorIcon />

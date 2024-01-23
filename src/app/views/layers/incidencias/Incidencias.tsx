@@ -7,14 +7,23 @@ import { Servicios } from "../../../services/Servicios";
 import { AlertS } from "../../../helpers/AlertS";
 import IncidenciasModal from "./IncidenciasModal";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
+import ReporteIncidencia from "../escaner/ReporteIncidencia";
+import ButtonsAdd from "../../share/ButtonsAdd";
+import { Escaner } from "../escaner/Escaner";
 const Incidencias = () => {
   const [open, setOpen] = useState(false);
   const [openModal, setopenModal] = useState(false);
+  const [openIncidencia, setopenIncidencia] = useState(false);
   const [data, setData] = useState([]);
   const [vrows, setVrows] = useState({});
 
+  const handleOpen = (v: any) => {
+    setopenIncidencia(true);
+  };
+
   const handleClose = () => {
     setopenModal(false);
+    setopenIncidencia(false);
   };
 
   const columnsRel: GridColDef[] = [
@@ -41,7 +50,7 @@ const Incidencias = () => {
       },
     },
     {
-      field: "FechaCreación",
+      field: "FechaCreacion",
       headerName: "Fecha de Incidencia",
       description: "Fecha de Incidencia",
       width: 130,
@@ -128,9 +137,12 @@ const Incidencias = () => {
       <TitleComponent title={"Incidencias"} show={open} />
       <Grid container spacing={1} padding={0}>
         <Grid item xs={12} sm={12} md={12} lg={12}>
+          <ButtonsAdd handleOpen={handleOpen} agregar={true} />
           <MUIXDataGrid columns={columnsRel} rows={data} />
         </Grid>
       </Grid>
+
+      {openIncidencia ? <Escaner handleClose={handleClose} /> : ""}
       {openModal ? (
         <IncidenciasModal
           datos={vrows}
