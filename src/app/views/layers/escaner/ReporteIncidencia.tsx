@@ -85,7 +85,7 @@ const ReporteIncidencia = ({
           icon: "success",
         });
         setOpen(false);
-        navigate(0);
+        navigate("/sicain/incidencia");
       } else {
         setOpen(false);
         AlertS.fire({
